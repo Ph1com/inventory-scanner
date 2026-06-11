@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inventory Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #result { margin-top: 20px; font-size: 20px; }
+  </style>
+</head>
+<body>
+
+<h2>Inventory Scanner</h2>
+<div id="reader" style="width: 300px;"></div>
+<div id="result"></div>
+
+<script>
+const apiUrl = "https://script.google.com/macros/s/AKfycbyAK1aoIrb-VR-h0JL25FgE2dWCtt4kEUxPvg4z8e0p7006PXaGA9iep4s7w0cBiRvn/exec";
+
+function onScanSuccess(decodedText) {
+  document.getElementById("result").innerHTML = "Scanned: " + decodedText;
+
+  fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ barcode: decodedText })
+  })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("result").innerHTML =
+      "Saved ✔ (" + decodedText + ")";
+  })
+  .catch(err => {
+    document.getElementById("result").innerHTML =
+      "Error sending to server";
+  });
+}
+
+new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 })
+  .render(onScanSuccess);
+</script>
+
+</body>
+</html>
