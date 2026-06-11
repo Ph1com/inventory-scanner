@@ -44,17 +44,19 @@ Html5Qrcode.getCameras().then(cameras => {
     onScanSuccess
   ).then(() => {
 
-    // ⭐ Immediately switch to camera2 (your first rear-facing camera)
-    if (cameras[2]) {
-      select.value = cameras[2].id;
-      scanner.stop().then(() => {
-        scanner.start(
-          cameras[2].id,
-          { fps: 10, qrbox: 250 },
-          onScanSuccess
-        );
-      });
-    }
+    // ⭐ Delay the switch so the scanner fully initialises first
+    setTimeout(() => {
+      if (cameras[2]) {
+        select.value = cameras[2].id;
+        scanner.stop().then(() => {
+          scanner.start(
+            cameras[2].id,
+            { fps: 10, qrbox: 250 },
+            onScanSuccess
+          );
+        });
+      }
+    }, 500); // ⭐ 500ms delay prevents blank page
 
   });
 
