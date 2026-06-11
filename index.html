@@ -36,8 +36,11 @@ Html5Qrcode.getCameras().then(cameras => {
 
   // ⭐ DEFAULT TO CAMERA INDEX 2 (your first rear-facing camera)
   const defaultCam = cameras[2].id;
+
+  // ⭐ Set dropdown BEFORE starting scanner
   select.value = defaultCam;
 
+  // ⭐ Now start scanner with the same value
   scanner.start(
     defaultCam,
     { fps: 10, qrbox: 250 },
@@ -55,4 +58,3 @@ Html5Qrcode.getCameras().then(cameras => {
   });
 });
 </script>
-
