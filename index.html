@@ -20,29 +20,16 @@ function onScanSuccess(decodedText) {
   });
 }
 
-Html5Qrcode.getCameras().then(cameras => {
-  if (cameras && cameras.length) {
-    const cameraId = cameras[0].id; // default
-    const cameraSelect = document.createElement("select");
+const scanner = new Html5Qrcode("reader");
 
-    cameras.forEach(cam => {
-      const opt = document.createElement("option");
-      opt.value = cam.id;
-      opt.textContent = cam.label || "Camera";
-      cameraSelect.appendChild(opt);
-    });
-
-    document.body.insertBefore(cameraSelect, document.getElementById("reader"));
-
-    cameraSelect.addEventListener("change", () => {
-      scanner.stop().then(() => {
-        scanner.start(cameraSelect.value, { fps: 10, qrbox: 250 }, onScanSuccess);
-      });
-    });
-
-    const scanner = new Html5Qrcode("reader");
-    scanner.start(cameraId, { fps: 10, qrbox: 250 }, onScanSuccess);
-  }
+scanner.start(
+  { facingMode: "user" },   // ⭐ FORCE FRONT CAMERA
+  { fps: 10, qrbox: 250 },
+  onScanSuccess
+).catch(err => {
+  document.getElementById("result").innerHTML =
+    "Camera error: " + err;
 });
 </script>
+
 
