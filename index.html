@@ -1,3 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inventory Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #reader { width: 300px; margin-top: 20px; }
+    #result { margin-top: 20px; font-size: 20px; }
+  </style>
+</head>
+
+<body>
+
+<h2>Inventory Scanner</h2>
+
+<!-- ⭐ MUST exist before script runs -->
+<div id="reader"></div>
+<div id="result"></div>
+
 <script>
 const apiUrl = "https://script.google.com/macros/s/AKfycbyAK1aoIrb-VR-h0JL25FgE2dWCtt4kEUxPvg4z8e0p7006PXaGA9iep4s7w0cBiRvn/exec";
 
@@ -32,4 +53,5 @@ scanner.start(
 });
 </script>
 
-
+</body>
+</html>
