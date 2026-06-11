@@ -54,14 +54,11 @@ Html5Qrcode.getCameras().then(cameras => {
     select.appendChild(opt);
   });
 
-  // ⭐ Auto-select the SECOND camera (usually the outward-facing one)
-  const defaultCam = cameras.length > 1 ? cameras[1].id : cameras[0].id;
-  select.value = defaultCam;
-
   scanner = new Html5Qrcode("reader");
 
+  // Start with the FIRST camera (usually rear)
   scanner.start(
-    defaultCam,
+    cameras[0].id,
     { fps: 10, qrbox: 250 },
     onScanSuccess
   );
@@ -80,3 +77,4 @@ Html5Qrcode.getCameras().then(cameras => {
 
 </body>
 </html>
+
