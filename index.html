@@ -32,11 +32,20 @@ Html5Qrcode.getCameras().then(cameras => {
     select.appendChild(opt);
   });
 
-  scanner = new Html5Qrcode("reader");
+  // ⭐ Detect rear-facing camera by label
+  let defaultCam = cameras[0].id; // fallback
+  for (let cam of cameras) {
+    const label = cam.label.toLowerCase();
+    if (label.includes("back") || label.includes("rear") || label.includes("environment")) {
+      defaultCam = cam.id;
+      break;
+    }
+  }
 
-  // ⭐ DEFAULT TO THE LAST CAMERA (usually the outward-facing rear camera)
-  const defaultCam = cameras[cameras.length - 1].id;
+  // Set dropdown to detected rear camera
   select.value = defaultCam;
+
+  scanner = new Html5Qrcode("reader");
 
   scanner.start(
     defaultCam,
