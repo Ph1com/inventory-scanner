@@ -1,41 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GHL Inventory</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 80px;
-      background: #f5f5f5;
-    }
-    button {
-      padding: 20px 40px;
-      font-size: 24px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    button:active {
-      background: #0056b3;
-    }
-  </style>
-</head>
-<body>
-
-<h1>GHL Inventory</h1>
-
 <button onclick="openApp()">Open Inventory App</button>
 
 <script>
 function openApp() {
-  window.location.href = "https://script.google.com/macros/s/AKfycbyEz4xPGld4OMMMJh-i2GT6pgY2JaUf0UXcjB-ApWTdZqr_ienlsa2Rv7sgPRz0cgTi/exec";
+  // Force Chrome by using an intent URL
+  window.location.href = "intent://script.google.com/macros/s/AKfycbyEz4xPGld4OMMMJh-i2GT6pgY2JaUf0UXcjB-ApWTdZqr_ienlsa2Rv7sgPRz0cgTi/exec#Intent;scheme=https;package=com.android.chrome;end";
 }
 </script>
-
-</body>
-</html>
 
