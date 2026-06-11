@@ -1,20 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inventory Scanner</title>
-  <script src="https://unpkg.com/html5-qrcode"></script>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    #result { margin-top: 20px; font-size: 20px; }
-  </style>
-</head>
-<body>
-
-<h2>Inventory Scanner</h2>
-<div id="reader" style="width: 300px;"></div>
-<div id="result"></div>
-
 <script>
 const apiUrl = "https://script.google.com/macros/s/AKfycbyAK1aoIrb-VR-h0JL25FgE2dWCtt4kEUxPvg4z8e0p7006PXaGA9iep4s7w0cBiRvn/exec";
 
@@ -37,9 +20,29 @@ function onScanSuccess(decodedText) {
   });
 }
 
-new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 })
-  .render(onScanSuccess);
+Html5Qrcode.getCameras().then(cameras => {
+  if (cameras && cameras.length) {
+    const cameraId = cameras[0].id; // default
+    const cameraSelect = document.createElement("select");
+
+    cameras.forEach(cam => {
+      const opt = document.createElement("option");
+      opt.value = cam.id;
+      opt.textContent = cam.label || "Camera";
+      cameraSelect.appendChild(opt);
+    });
+
+    document.body.insertBefore(cameraSelect, document.getElementById("reader"));
+
+    cameraSelect.addEventListener("change", () => {
+      scanner.stop().then(() => {
+        scanner.start(cameraSelect.value, { fps: 10, qrbox: 250 }, onScanSuccess);
+      });
+    });
+
+    const scanner = new Html5Qrcode("reader");
+    scanner.start(cameraId, { fps: 10, qrbox: 250 }, onScanSuccess);
+  }
+});
 </script>
 
-</body>
-</html>
