@@ -34,18 +34,29 @@ Html5Qrcode.getCameras().then(cameras => {
 
   scanner = new Html5Qrcode("reader");
 
-  // ⭐ DEFAULT TO CAMERA INDEX 2 (your first rear-facing camera)
-  const defaultCam = cameras[2].id;
+  // ⭐ Always start with camera0 (only one that never blanks)
+  const safeStartCam = cameras[0].id;
+  select.value = safeStartCam;
 
-  // ⭐ Set dropdown BEFORE starting scanner
-  select.value = defaultCam;
-
-  // ⭐ Now start scanner with the same value
   scanner.start(
-    defaultCam,
+    safeStartCam,
     { fps: 10, qrbox: 250 },
     onScanSuccess
-  );
+  ).then(() => {
+
+    // ⭐ Immediately switch to camera2 (your first rear-facing camera)
+    if (cameras[2]) {
+      select.value = cameras[2].id;
+      scanner.stop().then(() => {
+        scanner.start(
+          cameras[2].id,
+          { fps: 10, qrbox: 250 },
+          onScanSuccess
+        );
+      });
+    }
+
+  });
 
   select.addEventListener("change", () => {
     scanner.stop().then(() => {
