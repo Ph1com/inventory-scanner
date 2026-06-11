@@ -34,31 +34,15 @@ Html5Qrcode.getCameras().then(cameras => {
 
   scanner = new Html5Qrcode("reader");
 
-  // ⭐ Always start with camera0 (only one that never blanks)
-  const safeStartCam = cameras[0].id;
-  select.value = safeStartCam;
+  // ⭐ DEFAULT TO THE LAST CAMERA (usually the outward-facing rear camera)
+  const defaultCam = cameras[cameras.length - 1].id;
+  select.value = defaultCam;
 
   scanner.start(
-    safeStartCam,
+    defaultCam,
     { fps: 10, qrbox: 250 },
     onScanSuccess
-  ).then(() => {
-
-    // ⭐ Delay the switch so the scanner fully initialises first
-    setTimeout(() => {
-      if (cameras[2]) {
-        select.value = cameras[2].id;
-        scanner.stop().then(() => {
-          scanner.start(
-            cameras[2].id,
-            { fps: 10, qrbox: 250 },
-            onScanSuccess
-          );
-        });
-      }
-    }, 500); // ⭐ 500ms delay prevents blank page
-
-  });
+  );
 
   select.addEventListener("change", () => {
     scanner.stop().then(() => {
